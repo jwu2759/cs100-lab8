@@ -217,6 +217,55 @@ TEST(RandTest, RandTest3){
         EXPECT_DOUBLE_EQ(x->evaluate(), 77);
 }
 
+TEST(IteratorClass, Op){
+	Base* x = new Op(3);
+	EXPECT_EQ(x->number_of_children(), 0);
+	EXPECT_EQ(x->get_child(0), nullptr);
+}
+
+TEST(IteratorClass, Rand){
+	Base* x = new Rand();
+	EXPECT_EQ(x->number_of_children(), 0);
+	EXPECT_EQ(x->get_child(0), nullptr);
+}
+
+TEST(IteratorClass, Mult){
+	Base* x = new Mult(new Op(3), new Op(2));
+	EXPECT_EQ(x->number_of_children(), 2);
+	EXPECT_EQ(x->get_child(0)->evaluate(), 3);
+	EXPECT_EQ(x->get_child(1)->evaluate(), 2);
+}
+
+TEST(IteratorClass, Add){
+	Base* x = new Add(new Op(3), new Op(2));
+	EXPECT_EQ(x->number_of_children(), 2);
+	EXPECT_EQ(x->get_child(0)->evaluate(), 3);
+	EXPECT_EQ(x->get_child(1)->evaluate(), 2);
+}
+
+TEST(IteratorClass, Div){
+	Base* x = new Div(new Op(3), new Op(2));
+	EXPECT_EQ(x->number_of_children(), 2);
+	EXPECT_EQ(x->get_child(0)->evaluate(), 3);
+	EXPECT_EQ(x->get_child(1)->evaluate(), 2);
+}
+
+TEST(IteratorClass, Sub){
+	Base* x = new Sub(new Op(3), new Op(2));
+	EXPECT_EQ(x->number_of_children(), 2);
+	EXPECT_EQ(x->get_child(0)->evaluate(), 3);
+	EXPECT_EQ(x->get_child(1)->evaluate(), 2);
+}
+
+TEST(IteratorClass, Pow){
+	Base* x = new Pow(new Op(3), new Op(2));
+	EXPECT_EQ(x->number_of_children(), 2);
+	EXPECT_EQ(x->get_child(0)->evaluate(), 3);
+	EXPECT_EQ(x->get_child(1)->evaluate(), 2);
+}
+
+
+
 
 #endif
 
