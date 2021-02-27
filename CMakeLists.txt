@@ -8,6 +8,12 @@ ADD_EXECUTABLE(
 	test
 	./tests/test.cpp
 	./tests/base_test.hpp
+	./visitor.hpp
+)
+
+ADD_EXECUTABLE(
+	printer
+	./main.cpp
 )
 
 TARGET_LINK_LIBRARIES(test gtest)
