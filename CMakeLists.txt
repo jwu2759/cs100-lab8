@@ -14,6 +14,8 @@ ADD_EXECUTABLE(
 ADD_EXECUTABLE(
 	printer
 	./main.cpp
+	./iterator.cpp
+	./visitor.cpp
 )
 
 TARGET_LINK_LIBRARIES(test gtest)

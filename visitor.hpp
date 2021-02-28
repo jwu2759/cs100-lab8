@@ -41,6 +41,7 @@ class Visitor{
 
 class VisitorLatex : public Visitor{
 	public:
+	~VisitorLatex(){}
         virtual void visit_op(Op* node);
         virtual void visit_rand(Rand* node);
         virtual void visit_add_begin(Add* node);
