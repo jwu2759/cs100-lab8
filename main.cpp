@@ -52,5 +52,10 @@ int main(){
 	for(int i = 0; i < latex.size(); ++i){
 		std::cout << latex[i] << std::endl;
 	}
+	delete a;
+	delete b;
+	delete c;
+	delete d;
+	delete e;
 	return 0;
 }
