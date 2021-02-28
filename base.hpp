@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include "visitor.hpp"
 
 class Base {
     public:
@@ -16,7 +17,7 @@ class Base {
         virtual std::string stringify() = 0;
         virtual int number_of_children() = 0;
         virtual Base* get_child(int i) = 0;
-	virtual void accept(Visitor* visitor, int index)const = 0;
+	virtual void accept(Visitor* visitor, int index) = 0;
 };
 
 class Nullary : public Base{
@@ -24,8 +25,6 @@ class Nullary : public Base{
       		double val;
       		std::ostringstream strs;
 	public:
-        virtual double evaluate() = 0;
-        virtual std::string stringify() = 0;
 	virtual int number_of_children(){
 		return 0;
 	}
@@ -39,8 +38,6 @@ class Binary : public Base{
 		Base* left;
 		Base* right;
 	public:
-        virtual double evaluate() = 0;
-        virtual std::string stringify() = 0;
         ~Binary() {
 		delete left;
 		delete right;
@@ -65,6 +62,10 @@ class Op : public Nullary {
 	virtual ~Op(){}
    	virtual double evaluate() { return val; }
    	virtual std::string stringify() { return strs.str(); }
+	virtual void accept(Visitor* visitor, int index){
+		if(index == 0)
+			visitor->visit_op(this);
+	}
 };
 
 class Rand : public Nullary{
@@ -75,6 +76,10 @@ class Rand : public Nullary{
       }
       virtual double evaluate(){return val;}
       virtual std::string stringify(){return strs.str();}
+	virtual void accept(Visitor* visitor, int index){
+		if(index == 0)
+			visitor->visit_rand(this);
+	}
 };
 
 class Mult : public Binary{
@@ -89,6 +94,14 @@ class Mult : public Binary{
       virtual std::string stringify(){
 	 return "(" + left->stringify() + "*" + right->stringify() + ")";
       }
+	virtual void accept(Visitor* visitor, int index){
+		if(index == 0)
+			visitor->visit_mult_begin(this);
+		else if(index == 1)
+			visitor->visit_mult_middle(this);
+		else
+			visitor->visit_mult_end(this);
+	}
 };
 
 class Add : public Binary{
@@ -103,6 +116,14 @@ class Add : public Binary{
       virtual std::string stringify(){
 	return "(" + left->stringify() + "+" + right->stringify() + ")";
       }
+	virtual void accept(Visitor* visitor, int index){
+		if(index == 0)
+			visitor->visit_add_begin(this);
+		else if(index == 1)
+			visitor->visit_add_middle(this);
+		else
+			visitor->visit_add_end(this);
+	}
 
 };
 
@@ -119,6 +140,14 @@ class Sub : public Binary {
 		virtual std::string stringify(){
 			return "(" + left->stringify() + "-" + right->stringify() + ")";
 		}
+	virtual void accept(Visitor* visitor, int index){
+		if(index == 0)
+			visitor->visit_sub_begin(this);
+		else if(index == 1)
+			visitor->visit_sub_middle(this);
+		else
+			visitor->visit_sub_end(this);
+	}
 };
 
 class Div : public Binary{
@@ -133,7 +162,14 @@ class Div : public Binary{
       virtual std::string stringify(){
 	 return "(" + left->stringify() + "/" + right->stringify() + ")";
       }
-
+	virtual void accept(Visitor* visitor, int index){
+		if(index == 0)
+			visitor->visit_div_begin(this);
+		else if(index == 1)
+			visitor->visit_div_middle(this);
+		else
+			visitor->visit_div_end(this);
+	}
 };
 
 class Pow : public Binary {
@@ -148,5 +184,13 @@ class Pow : public Binary {
 		virtual std::string stringify(){
 			return "(" + left->stringify() + "**" + right->stringify() + ")";
 		}
+	virtual void accept(Visitor* visitor, int index){
+		if(index == 0)
+			visitor->visit_pow_begin(this);
+		else if(index == 1)
+			visitor->visit_pow_middle(this);
+		else
+			visitor->visit_pow_end(this);
+	}
 };
 #endif //__BASE_HPP__
