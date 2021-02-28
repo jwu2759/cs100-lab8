@@ -8,7 +8,8 @@ ADD_EXECUTABLE(
 	test
 	./tests/test.cpp
 	./tests/base_test.hpp
-	./visitor.hpp
+	./visitor.cpp
+	./iterator.cpp
 )
 
 ADD_EXECUTABLE(

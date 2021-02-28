@@ -40,8 +40,13 @@ class Visitor{
 };
 
 class VisitorLatex : public Visitor{
+	private:
+		std::string os;
 	public:
 	~VisitorLatex(){}
+	void getLatex(std::string& output){
+		output = "$" + os + "$";
+	}
         virtual void visit_op(Op* node);
         virtual void visit_rand(Rand* node);
         virtual void visit_add_begin(Add* node);
