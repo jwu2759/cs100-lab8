@@ -67,4 +67,9 @@ std::string PrintLaTeX(Base* ptr){
 	v.getLatex(output);
 	return output;
 }
+
+
+
+
+
 #endif

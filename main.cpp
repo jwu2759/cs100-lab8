@@ -17,6 +17,19 @@ std::string PrintLaTeX(Base* ptr){
 	return output;
 }
 
+std::string PrintMathML(Base* ptr){
+	VisitMathML v;
+	std::string output;
+	Iterator iter(ptr);
+        while(!iter.is_done()){
+                iter.current_node()->accept(&v, iter.current_index());
+		
+                iter.next();
+        }
+	v.getMathML(output);
+	return output;
+}
+
 int main(){
 	Add* a = new Add(new Op(3), new Op(5));
 	Add* b = new Add(new Op(1),
@@ -48,10 +61,21 @@ int main(){
 	latex.push_back(PrintLaTeX(e));
 	//std::cout << std::endl;
 
+	std::vector<std::string> mathML;
+	mathML.push_back(PrintMathML(a));
+	mathML.push_back(PrintMathML(b));
+	mathML.push_back(PrintMathML(c));
+	mathML.push_back(PrintMathML(d));
+	mathML.push_back(PrintMathML(e));
+
 	std::cout << "All expressions:" << std::endl;
 	for(int i = 0; i < latex.size(); ++i){
 		std::cout << latex[i] << std::endl;
 	}
+	for(int i = 0; i < mathML.size(); i++){
+		std::cout << mathML[i] << std::endl;
+	}
+	
 	delete a;
 	delete b;
 	delete c;
