@@ -68,6 +68,52 @@ std::string PrintLaTeX(Base* ptr){
 	return output;
 }
 
+std::string PrintMathML(Base* ptr){
+	VisitMathML v;
+	std::string output;
+	Iterator iter(ptr);
+        while(!iter.is_done()){
+                iter.current_node()->accept(&v, iter.current_index());
+		
+                iter.next();
+        }
+	v.getMathML(output);
+	return output;
+}
+
+TEST(mathMLTest, mathMLAdd){
+	VisitMathML v;
+	Add* test = new Add(new Op(3), new Op(2));
+	EXPECT_EQ(PrintMathML(test), "<math>\n\t<apply>\n\t\t<plus/>\n\t\t<cn>3</cn>\n\t\t<cn>2</cn>\n\t</apply>\n</math>\n");
+}
+
+TEST(mathMLTest, mathMLMult){
+	VisitMathML v;
+	Mult* test = new Mult(new Op(3), new Op(2));
+        EXPECT_EQ(PrintMathML(test), "<math>\n\t<apply>\n\t\t<times/>\n\t\t<cn>3</cn>\n\t\t<cn>2</cn>\n\t</apply>\n</math>\n");
+}
+
+TEST(mathMLTest, mathMLSub){
+	VisitMathML v;
+	Sub* test = new Sub(new Op(3), new Op(2));
+	EXPECT_EQ(PrintMathML(test), "<math>\n\t<apply>\n\t\t<minus/>\n\t\t<cn>3</cn>\n\t\t<cn>2</cn>\n\t</apply>\n</math>\n");
+}
+
+TEST(mathMLTest, mathMLDiv){
+        VisitMathML v;
+        Div* test = new Div(new Op(3), new Op(2));
+        EXPECT_EQ(PrintMathML(test), "<math>\n\t<apply>\n\t\t<divide/>\n\t\t<cn>3</cn>\n\t\t<cn>2</cn>\n\t</apply>\n</math>\n");
+}
+
+TEST(mathMLTest, mathMLPow){
+        VisitMathML v;
+        Pow* test = new Pow(new Op(3), new Op(2));
+        EXPECT_EQ(PrintMathML(test), "<math>\n\t<apply>\n\t\t<power/>\n\t\t<cn>3</cn>\n\t\t<cn>2</cn>\n\t</apply>\n</math>\n");
+}
+
+
+
+
 
 
 
